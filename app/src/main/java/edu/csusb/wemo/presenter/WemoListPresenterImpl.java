@@ -36,11 +36,23 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
         wemoServiceInteractor.stopListeningToDevices();
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
+    public void onPause() {
+        wemoServiceInteractor.stopListeningToDevices();
+    }
+
 
     @Override
     public void initializeDevices() {
         wemoServiceInteractor = new WemoServiceInteractor(wemoListView.getContext(),this);
     }
+
+
 
     /**
      * If device is a wemo device, turn it into a WemoDevice, maybe should have a seperate interface
@@ -63,18 +75,30 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
            // toggleButtonClick(new WemoDeviceDisplay(null,device));
 
             WemoDevice wemoDevice = new WemoDevice(device);
-            wemoServiceInteractor.getDeviceSubscription(wemoDevice);
+            wemoServiceInteractor.subscribeInsightParams(wemoDevice);
             wemoListView.addDeviceToList(wemoDevice);
         }
 
     }
 
+    @Override
+    public void subscribeToPowerState(WemoDevice device){
+         wemoServiceInteractor.subcribeToBinaryState(device);
+    }
+
+    @Override
+    public void subscribeToPowerStateAndInsightParams(WemoDevice device){
+         wemoServiceInteractor.subscribeInsightParams(device);
+    }
+
+    @Override
     public void toggleButtonClick(WemoDevice device){
+        wemoListView.onPowerStateChange(getPowerStatus(device));
         wemoServiceInteractor.togglePowerOnOff(device);
     }
-    public void getPowerStatus(WemoDevice device){
-
-        wemoServiceInteractor.getPowerState(device);
+    @Override
+    public String getPowerStatus(WemoDevice device){
+        return wemoServiceInteractor.getPowerState(device);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package edu.csusb.wemo.presenter;
 
+import edu.csusb.wemo.model.WemoDevice;
 import edu.csusb.wemo.view.WemoListView;
 
 /**
@@ -10,4 +11,12 @@ public interface WemoListPresenter extends Presenter<WemoListView> {
 
 
     void initializeDevices();
+
+    void subscribeToPowerState(WemoDevice device);
+
+    void subscribeToPowerStateAndInsightParams(WemoDevice device);
+
+    void toggleButtonClick(WemoDevice device);
+
+    String getPowerStatus(WemoDevice device);
 }

@@ -15,4 +15,5 @@ public interface WemoListView {
     void addDeviceToList(WemoDevice wemoDevice);
     Activity getContext();
 
+    void onPowerStateChange(String powerState);
 }

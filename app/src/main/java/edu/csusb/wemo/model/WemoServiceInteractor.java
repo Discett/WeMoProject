@@ -29,6 +29,8 @@ import java.util.UUID;
 import edu.csusb.wemo.api.client.upnp.WemoRegistryListener;
 import edu.csusb.wemo.service.WemoService;
 
+import static org.fourthline.cling.binding.xml.Descriptor.Device.ELEMENT.device;
+
 /**
  * Created by Josiah on 2/21/2017.
  */
@@ -114,7 +116,7 @@ public class WemoServiceInteractor {
 
 
 
-    public WemoSubscriptionCallback getDeviceSubscription(final WemoDevice wemoDevice) {
+    public WemoSubscriptionCallback subscribeInsightParams(final WemoDevice wemoDevice) {
             // WeMo basic event service
             Service service = wemoDevice.device.findService(new ServiceType("Belkin", "insight"));
 
@@ -154,11 +156,11 @@ public class WemoServiceInteractor {
 
     }
 
-    public void subSubcribeToBinaryState( Device device) {
+    public void subcribeToBinaryState( WemoDevice wemoDevice) {
         // WeMo basic event service
-        Service service = device.findService(new ServiceType("Belkin", "basicevent"));
+        Service service = wemoDevice.device.findService(new ServiceType("Belkin", "basicevent"));
 
-        WemoSubscriptionCallback insightSub =  new WemoSubscriptionCallback(device.getDetails().getSerialNumber(), UUID.randomUUID().toString(),  service, 600) {
+        WemoSubscriptionCallback insightSub =  new WemoSubscriptionCallback(wemoDevice.device.getDetails().getSerialNumber(), UUID.randomUUID().toString(),  service, 600) {
 
             @Override
             @SuppressWarnings("unchecked")
@@ -193,10 +195,8 @@ public class WemoServiceInteractor {
         if (anException != null && anException.getMessage() != null) {
             // TODO Event when ActionFails
             Log.i("WemoService", "      getPowerState:"+" Failure");
-
-
+            return null;
         }
-
 
         @SuppressWarnings("unchecked")
         Map<String, ActionArgumentValue> result = invocation.getOutputMap();
@@ -207,8 +207,6 @@ public class WemoServiceInteractor {
             ActionArgumentValue newArgument = result.get(variable);
             Log.i("WemoService", "      variable:"+variable+"="+(String)newArgument.getValue());
             stringBuilder.append( (String) newArgument.getValue());
-
-
 
         }
 
