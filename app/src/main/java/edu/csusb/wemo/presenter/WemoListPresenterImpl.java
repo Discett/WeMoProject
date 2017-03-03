@@ -27,7 +27,7 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
 
     @Override
     public void setView(WemoListView view) {
-    wemoListView = view;
+        wemoListView = view;
     }
 
     @Override
@@ -76,6 +76,7 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
 
             WemoDevice wemoDevice = new WemoDevice(device);
             wemoServiceInteractor.subscribeInsightParams(wemoDevice);
+           // toggleButtonClick(wemoDevice);
             wemoListView.addDeviceToList(wemoDevice);
         }
 

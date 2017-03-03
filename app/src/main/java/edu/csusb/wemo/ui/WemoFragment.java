@@ -65,4 +65,9 @@ public class WemoFragment extends Fragment implements WemoListView{
     public Activity getContext(){
         return getActivity();
     }
+
+    @Override
+    public void onPowerStateChange(String powerState) {
+
+    }
 }
