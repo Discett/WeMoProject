@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoadingScreenActivity extends AppCompatActivity {
-    private static int TIME_OUT = 5000; //Time to launch the another activity
+    private static int TIME_OUT = 2500; //Time to launch the another activity
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
