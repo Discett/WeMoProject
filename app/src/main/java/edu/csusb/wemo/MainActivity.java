@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
+                finish();
+                overridePendingTransition(0,0); //gets rid of app closing 'animation'.
                 startActivity(new Intent(this,MainActivity.class));
                 return true;
             case R.id.menu_about:
