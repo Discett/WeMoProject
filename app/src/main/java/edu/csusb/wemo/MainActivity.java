@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                startActivity(new Intent(this,LoadingScreenActivity.class));
+                startActivity(new Intent(this,MainActivity.class));
                 return true;
             case R.id.menu_about:
                 startActivity(new Intent(this,AboutActivity.class));
