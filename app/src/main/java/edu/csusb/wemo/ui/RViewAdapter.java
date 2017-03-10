@@ -1,14 +1,12 @@
 package edu.csusb.wemo.ui;
 
 import android.content.Context;
-import android.support.v7.view.menu.ExpandedMenuView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -33,6 +31,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         this.wemoDeviceLists = wemoDeviceLists;
         this.mContext = mContext;
         this.wemoDeviceClickListener = wemoDeviceClickListener;
+
     }
 
 

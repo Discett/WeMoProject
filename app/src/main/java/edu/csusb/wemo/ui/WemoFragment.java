@@ -16,7 +16,6 @@ import java.util.List;
 
 import edu.csusb.wemo.R;
 import edu.csusb.wemo.model.WemoDevice;
-import edu.csusb.wemo.model.WemoInsightSwitch;
 import edu.csusb.wemo.presenter.WemoListPresenterImpl;
 import edu.csusb.wemo.view.WemoListView;
 
@@ -57,6 +56,8 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
        // list.add(item);
        // list.add(item2);
         rAdapter = new RViewAdapter(list,getContext(),this);
+        rAdapter.setHasStableIds(true);
+        rView.setItemAnimator(null);
         rView.setAdapter(rAdapter);
 
     }
