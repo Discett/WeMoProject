@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     }
-    
+
     //Create icons for action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
