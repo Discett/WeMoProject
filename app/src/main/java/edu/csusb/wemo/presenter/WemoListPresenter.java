@@ -19,4 +19,6 @@ public interface WemoListPresenter extends Presenter<WemoListView> {
     void toggleButtonClick(WemoDevice device);
 
     String getPowerStatus(WemoDevice device);
+    void refreshList();
+
 }

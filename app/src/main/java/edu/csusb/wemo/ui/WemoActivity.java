@@ -1,12 +1,10 @@
 package edu.csusb.wemo.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import org.fourthline.cling.android.FixedAndroidLogHandler;
@@ -39,11 +37,15 @@ public class WemoActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
-
-
     // DOC:SERVICE_BINDING
 
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return false;
+    }
 
     // DOC:MENU
 

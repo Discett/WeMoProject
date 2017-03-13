@@ -29,8 +29,6 @@ import java.util.UUID;
 import edu.csusb.wemo.api.client.upnp.WemoRegistryListener;
 import edu.csusb.wemo.service.WemoService;
 
-import static org.fourthline.cling.binding.xml.Descriptor.Device.ELEMENT.device;
-
 /**
  * Created by Josiah on 2/21/2017.
  */
@@ -84,7 +82,11 @@ public class WemoServiceInteractor {
     public void searchForWemo(){
         Log.e("WemoService","searchForWemo");
 
-        upnpService.getControlPoint().search(new ServiceTypeHeader(new ServiceType("Belkin", "basicevent", 1)));
+        if(isServiceBound) {
+            if(upnpService!=null) {
+                upnpService.getControlPoint().search(new ServiceTypeHeader(new ServiceType("Belkin", "basicevent", 1)));
+            }
+        }
     }
 
     /**
@@ -117,42 +119,42 @@ public class WemoServiceInteractor {
 
 
     public WemoSubscriptionCallback subscribeInsightParams(final WemoDevice wemoDevice) {
-            // WeMo basic event service
-            Service service = wemoDevice.device.findService(new ServiceType("Belkin", "insight"));
+        // WeMo basic event service
+        Service service = wemoDevice.device.findService(new ServiceType("Belkin", "insight"));
 
-            WemoSubscriptionCallback insightSub =  new WemoSubscriptionCallback(wemoDevice.device.getDetails().getSerialNumber(), UUID.randomUUID().toString(),  service, 600) {
+        WemoSubscriptionCallback insightSub =  new WemoSubscriptionCallback(wemoDevice.device.getDetails().getSerialNumber(), UUID.randomUUID().toString(),  service, 600) {
 
-                @Override
-                @SuppressWarnings("unchecked")
-                protected void eventReceived(GENASubscription subscription) {
-                    String sequence = String.valueOf(subscription.getCurrentSequence().getValue());
-                    Log.e("WemoSubscription","Received event from device (switch) {"+ this.deviceId+"} with sequence id {"+sequence+"}");
+            @Override
+            @SuppressWarnings("unchecked")
+            protected void eventReceived(GENASubscription subscription) {
+                String sequence = String.valueOf(subscription.getCurrentSequence().getValue());
+                Log.e("WemoSubscription","Received event from device (switch) {"+ this.deviceId+"} with sequence id {"+sequence+"}");
 
-                    // update device
+                // update device
 
-                    Map<String, StateVariableValue> values = subscription.getCurrentValues();
-                    String insight = "null";
-                    for (String variable : values.keySet()) {
-                        //ActionArgumentValue newArgument = result.get(variable);
-                        Log.i("WemoSubscription",variable);
-                    }
-                    try {
-                        insight = String.valueOf(values.get("InsightParams").getValue());
-                        WemoInsightSwitch.paramsUpdate(wemoDevice.properties,insight);
-                        wemoDeviceChangeListener.deviceUpdate(wemoDevice);
-                        //wemoDeviceListener.deviceUpdate(wemoDevice);
+                Map<String, StateVariableValue> values = subscription.getCurrentValues();
+                String insight = "null";
+                for (String variable : values.keySet()) {
+                    //ActionArgumentValue newArgument = result.get(variable);
+                    Log.i("WemoSubscription",variable);
+                }
+                try {
+                    insight = String.valueOf(values.get("InsightParams").getValue());
+                    WemoInsightSwitch.paramsUpdate(wemoDevice.properties,insight);
+                    wemoDeviceChangeListener.deviceUpdate(wemoDevice);
+                    //wemoDeviceListener.deviceUpdate(wemoDevice);
 
 
 
-                    } catch (NullPointerException e){
-
-                    }
-                    Log.i("WemoSubscription","     "+insight);
+                } catch (NullPointerException e){
 
                 }
-            };
-            this.upnpService.getControlPoint().execute(insightSub);
-            return insightSub;
+                Log.i("WemoSubscription","     "+insight);
+
+            }
+        };
+        this.upnpService.getControlPoint().execute(insightSub);
+        return insightSub;
 
     }
 

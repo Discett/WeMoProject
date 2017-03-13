@@ -2,9 +2,7 @@ package edu.csusb.wemo.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,11 +19,8 @@ import java.util.List;
 
 import edu.csusb.wemo.R;
 import edu.csusb.wemo.model.WemoDevice;
-import edu.csusb.wemo.model.WemoInsightSwitch;
 import edu.csusb.wemo.presenter.WemoListPresenterImpl;
 import edu.csusb.wemo.view.WemoListView;
-
-import static android.R.id.list;
 
 /**
  * Created by Josiah on 2/24/2017.
@@ -69,6 +64,8 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         // list.add(item);
         // list.add(item2);
         rAdapter = new RViewAdapter(list,getContext(),this);
+        rAdapter.setHasStableIds(true);
+        rView.setItemAnimator(null);
         rView.setAdapter(rAdapter);
 
     }
@@ -79,14 +76,20 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         super.onDestroy();
     }
 
+    //Refresh the List
     @Override
     public void refreshList() {
-
+        wemoListPresenter.refreshList();
     }
 
     @Override
-    public void updateWemoDevice(WemoDevice updateDevice) {
-        rAdapter.updateDeviceList(updateDevice);
+    public void updateWemoDevice(final WemoDevice updateDevice) {
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rAdapter.updateDeviceList(updateDevice);
+            }
+        });
     }
 
     @Override
@@ -97,7 +100,6 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
                 rAdapter.addDevice(wemoDevice);
             }
         });
-
     }
 
 
@@ -128,11 +130,22 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         wemoListPresenter.toggleButtonClick(device);
     }
 
+    @Override
+    public void onWemoSubscribe(WemoDevice device) {
+        wemoListPresenter.subscribeToPowerStateAndInsightParams(device);
+    }
 
+    @Override
+    public String wemoPowerStatus(WemoDevice device) {
+        return wemoListPresenter.getPowerStatus(device);
+    }
+
+    //ToolBar Selections
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
+                refreshList();
                 return true;
             case R.id.menu_about:
                 startActivity(new Intent(getActivity(),AboutActivity.class));
@@ -141,3 +154,4 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         return false;
     }
 }
+

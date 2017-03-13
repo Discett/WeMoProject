@@ -50,7 +50,7 @@ import edu.csusb.wemo.ui.WemoDeviceClickListener;
  * @author Christian Bauer
  */
 // DOC:CLASS
-public class MainActivity extends ListActivity implements WemoDeviceChangeListener, WemoDeviceClickListener {
+public class MainActivity extends ListActivity implements WemoDeviceChangeListener {
 
     // DOC:CLASS
     // DOC:SERVICE_BINDING
@@ -64,7 +64,7 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
 
         public void onServiceConnected(ComponentName className, IBinder service) {
 
-           // Toast.makeText(getApplicationContext(), "Service Connected", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(), "Service Connected", Toast.LENGTH_SHORT).show();
             upnpService = (AndroidUpnpService) service;
 
             // Clear the list
@@ -212,7 +212,7 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
         String s = "0";
         for (String variable : result.keySet()) {
             ActionArgumentValue newArgument = result.get(variable);
-             s = (String) newArgument.getValue();
+            s = (String) newArgument.getValue();
             Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
         }
 
@@ -223,7 +223,6 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
             @Override
             public void success(ActionInvocation invocation) {
                 ActionArgumentValue status  = invocation.getOutput("BinaryState");
-
                 if( status != null) {
                     String s = (String) status.getValue();
                     Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
@@ -235,30 +234,23 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
                                 String defaultMsg) {
                 System.err.println(defaultMsg);
             }
-
         };
-
         upnpService.getControlPoint().execute(callback);
         /*
         ServiceType serviceType = new ServiceType("Belkin", "basicevent");
         Service service = deviceDisplay.device.findService(serviceType);
         Action action = service.getAction("GetBinaryState");
-
         @SuppressWarnings("unchecked")
         ActionInvocation invocation = new ActionInvocation(action);
        // executeActionInvocation(invocation);
-
         new ActionCallback.Default(invocation,
                 upnpService.getControlPoint()).run();
-
         ActionException anException = invocation.getFailure();
         if (anException != null && anException.getMessage() != null) {
            // logger.warn(anException.getMessage());
         }
-
         Map<String, ActionArgumentValue> result = invocation.getOutputMap();
         String s = (String) (invocation.getOutput("BinaryState").getValue());
-
         */
         String toggle = "1";
         if(!s.equals("0"))
@@ -270,7 +262,7 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
             @SuppressWarnings("unchecked")
             ActionInvocation invo = new ActionInvocation(a);
             invo.setInput("BinaryState",toggle);
-           // executeActionInvocation(invocation);
+            // executeActionInvocation(invocation);
 
             new ActionCallback.Default(invo,
                     upnpService.getControlPoint()).run();
@@ -282,12 +274,9 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
         upnpService.getControlPoint().execute(new ActionCallback(new ActionInvocation(a)) {
             @Override
             public void success(ActionInvocation actionInvocation) {
-
             }
-
             @Override
             public void failure(ActionInvocation actionInvocation, UpnpResponse upnpResponse, String s) {
-
             }
         })
         */
@@ -340,10 +329,6 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
         //TODO: something here.
     }
 
-    @Override
-    public void onWemoSwitchClick(WemoDevice device) {
-
-    }
     // DOC:CLASS_END
     // ...
 }

@@ -125,10 +125,10 @@ public class WemoInsightSwitch  {
     }
 
     public WemoInsightProperties getInsightProperties(){
-       return new WemoInsightProperties(properties);
+        return new WemoInsightProperties(properties);
     }
     public  Map<String, String> getPropertiesMap(){
-            return properties;
-        }
+        return properties;
+    }
 
 }

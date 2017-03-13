@@ -32,7 +32,7 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
 
     @Override
     public void detachView() {
-     wemoListView = null;
+        wemoListView = null;
         wemoServiceInteractor.stopListeningToDevices();
     }
 
@@ -60,8 +60,9 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
      */
     @Override
     public void deviceAdded(Device device) {
-        Log.e("WemoList","deviceAdded");
+
         if(device.isFullyHydrated()){
+            Log.e("WemoListPresenter","deviceAdded");
             for(Service service:device.getServices()) {
                 //String s = service.getServiceType().toFriendlyString();
                 Log.i("WemoList", "      "+service.getServiceType().toFriendlyString()+"|"+service.getServiceId());
@@ -71,12 +72,12 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
 
             }
             device.getServices();
-           // getPowerStatus(new WemoDeviceDisplay(null,device));
-           // toggleButtonClick(new WemoDeviceDisplay(null,device));
+            // getPowerStatus(new WemoDeviceDisplay(null,device));
+            // toggleButtonClick(new WemoDeviceDisplay(null,device));
 
             WemoDevice wemoDevice = new WemoDevice(device);
-            wemoServiceInteractor.subscribeInsightParams(wemoDevice);
-           // toggleButtonClick(wemoDevice);
+            //   wemoServiceInteractor.subscribeInsightParams(wemoDevice);
+            // toggleButtonClick(wemoDevice);
             wemoListView.addDeviceToList(wemoDevice);
         }
 
@@ -84,12 +85,12 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
 
     @Override
     public void subscribeToPowerState(WemoDevice device){
-         wemoServiceInteractor.subcribeToBinaryState(device);
+        wemoServiceInteractor.subcribeToBinaryState(device);
     }
 
     @Override
     public void subscribeToPowerStateAndInsightParams(WemoDevice device){
-         wemoServiceInteractor.subscribeInsightParams(device);
+        wemoServiceInteractor.subscribeInsightParams(device);
     }
 
     @Override
@@ -100,6 +101,11 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
     @Override
     public String getPowerStatus(WemoDevice device){
         return wemoServiceInteractor.getPowerState(device);
+    }
+
+    @Override
+    public void refreshList() {
+        wemoServiceInteractor.searchForWemo();
     }
 
     @Override
