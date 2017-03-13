@@ -2,6 +2,7 @@
 *.ipr
 *.iws
 .idea/
+.idea/modules.xml
 .gradle
 .idea
 /local.properties
