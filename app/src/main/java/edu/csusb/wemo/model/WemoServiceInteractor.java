@@ -29,8 +29,6 @@ import java.util.UUID;
 import edu.csusb.wemo.api.client.upnp.WemoRegistryListener;
 import edu.csusb.wemo.service.WemoService;
 
-import static org.fourthline.cling.binding.xml.Descriptor.Device.ELEMENT.device;
-
 /**
  * Created by Josiah on 2/21/2017.
  */
@@ -84,7 +82,11 @@ public class WemoServiceInteractor {
     public void searchForWemo(){
         Log.e("WemoService","searchForWemo");
 
-        upnpService.getControlPoint().search(new ServiceTypeHeader(new ServiceType("Belkin", "basicevent", 1)));
+        if(isServiceBound) {
+            if(upnpService!=null) {
+                upnpService.getControlPoint().search(new ServiceTypeHeader(new ServiceType("Belkin", "basicevent", 1)));
+            }
+        }
     }
 
     /**
