@@ -3,13 +3,16 @@ package edu.csusb.wemo.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,11 +25,13 @@ import edu.csusb.wemo.model.WemoInsightSwitch;
 import edu.csusb.wemo.presenter.WemoListPresenterImpl;
 import edu.csusb.wemo.view.WemoListView;
 
+import static android.R.id.list;
+
 /**
  * Created by Josiah on 2/24/2017.
  */
 
-public class WemoFragment extends Fragment implements WemoListView, WemoDeviceClickListener{
+public class WemoFragment extends Fragment implements WemoListView, WemoDeviceClickListener, Toolbar.OnMenuItemClickListener {
     WemoListPresenterImpl wemoListPresenter;
     private android.support.v7.widget.RecyclerView rView;
     private RViewAdapter rAdapter;
@@ -35,6 +40,7 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         super.onCreate(savedInstanceState);
         wemoListPresenter = new WemoListPresenterImpl();
         wemoListPresenter.setView(this);
+        setHasOptionsMenu(true);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +54,10 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
 
         rView = (RecyclerView) view.findViewById(R.id.rview);
         rView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.frag_tb);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.setTitle(R.string.app_name);
 
         //WemoDeviceList item = new WemoDeviceList();
         //item.setName("Wemo Device 1");
@@ -56,8 +66,8 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         //item2.setName("Wemo Device 2");
         //item2.setDescription("NightLightBedRoom");
         List<WemoDevice> list = new ArrayList<>();
-       // list.add(item);
-       // list.add(item2);
+        // list.add(item);
+        // list.add(item2);
         rAdapter = new RViewAdapter(list,getContext(),this);
         rView.setAdapter(rAdapter);
 
@@ -116,5 +126,18 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
     public void onWemoSwitchClick(WemoDevice device) {
         Log.d("bird","up");
         wemoListPresenter.toggleButtonClick(device);
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                return true;
+            case R.id.menu_about:
+                startActivity(new Intent(getActivity(),AboutActivity.class));
+                return true;
+        }
+        return false;
     }
 }
